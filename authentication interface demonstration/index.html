@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SecureGate — Next-Gen 2-Step Authentication Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient background glow elements -->
+  <div class="ambient-glow glow-1" aria-hidden="true"></div>
+  <div class="ambient-glow glow-2" aria-hidden="true"></div>
+  <div class="cyber-grid" aria-hidden="true"></div>
+
+  <!-- Main Container -->
+  <div class="app-wrapper">
+    <!-- Global Header / Brand Bar -->
+    <header class="top-nav">
+      <div class="brand-logo" id="brandLogoBtn" role="button" tabindex="0" title="SecureGate Platform">
+        <div class="logo-shield">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <span class="brand-name">SecureGate<span class="brand-accent">.io</span></span>
+          <span class="brand-tagline">Enterprise Zero-Trust Access</span>
+        </div>
+      </div>
+
+      <div class="header-status">
+        <span class="status-indicator">
+          <span class="status-dot"></span>
+          <span class="status-text">Sandbox Prototype</span>
+        </span>
+        <div class="security-chip">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          <span>256-bit Local Mock</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Multi-Step Progress Indicator (Visible for Page 1, 2, 3) -->
+    <nav class="stepper-nav" id="stepperNav" aria-label="Progress">
+      <div class="stepper-container">
+        <!-- Step 1: Login -->
+        <div class="step-node active" id="stepNode1" data-step="1">
+          <div class="step-badge">
+            <span class="step-number">1</span>
+            <svg class="step-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+          <div class="step-meta">
+            <span class="step-label">Step 1</span>
+            <span class="step-title">Login</span>
+          </div>
+        </div>
+
+        <div class="step-connector" id="connector1"></div>
+
+        <!-- Step 2: Verify -->
+        <div class="step-node" id="stepNode2" data-step="2">
+          <div class="step-badge">
+            <span class="step-number">2</span>
+            <svg class="step-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+          <div class="step-meta">
+            <span class="step-label">Step 2</span>
+            <span class="step-title">Verify</span>
+          </div>
+        </div>
+
+        <div class="step-connector" id="connector2"></div>
+
+        <!-- Step 3: Profile -->
+        <div class="step-node" id="stepNode3" data-step="3">
+          <div class="step-badge">
+            <span class="step-number">3</span>
+            <svg class="step-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+          <div class="step-meta">
+            <span class="step-label">Step 3</span>
+            <span class="step-title">Profile</span>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Dynamic Content Container -->
+    <main class="page-container" id="pageContainer">
+
+      <!-- ==============================================
+           PAGE 1: LOGIN
+      =============================================== -->
+      <section class="auth-card page-view active" id="loginPage" aria-labelledby="loginHeading">
+        <!-- Card Header -->
+        <div class="card-header">
+          <div class="card-icon-bubble">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+              <polyline points="10 17 15 12 10 7"/>
+              <line x1="15" y1="12" x2="3" y2="12"/>
+            </svg>
+          </div>
+          <h1 class="card-heading" id="loginHeading">Welcome back</h1>
+          <p class="card-subtext">Sign in to continue to your account</p>
+        </div>
+
+        <!-- Demo Helper Banner -->
+        <div class="demo-helper-banner" id="demoLoginBanner">
+          <div class="demo-banner-content">
+            <span class="demo-pill">DEMO CREDENTIALS</span>
+            <div class="demo-creds-text">
+              User: <strong>demo</strong> &bull; Pass: <strong>password123</strong>
+            </div>
+          </div>
+          <button type="button" class="btn-demo-autofill" id="btnAutoFillLogin" title="Auto-fill demo credentials">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+              <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+            </svg>
+            Auto-fill
+          </button>
+        </div>
+
+        <!-- Error Alert Container -->
+        <div class="alert-box alert-error hidden" id="loginAlert" role="alert">
+          <div class="alert-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </div>
+          <div class="alert-message" id="loginAlertMsg">
+            Incorrect username or password. Login failed.
+          </div>
+        </div>
+
+        <!-- Login Form -->
+        <form class="auth-form" id="loginForm" novalidate>
+          <!-- Username / Email Input -->
+          <div class="form-group" id="loginUserGroup">
+            <label class="form-label" for="loginUsername">
+              Username or Email
+            </label>
+            <div class="input-wrapper">
+              <span class="input-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </span>
+              <input 
+                type="text" 
+                id="loginUsername" 
+                class="form-input" 
+                placeholder="e.g. demo or name@company.com" 
+                autocomplete="username"
+                required
+              >
+            </div>
+            <span class="inline-feedback" id="loginUserError"></span>
+          </div>
+
+          <!-- Password Input -->
+          <div class="form-group" id="loginPassGroup">
+            <div class="label-row">
+              <label class="form-label" for="loginPassword">
+                Password
+              </label>
+              <a href="#" class="form-link text-sm" id="forgotPasswordLink">Forgot password?</a>
+            </div>
+            <div class="input-wrapper">
+              <span class="input-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </span>
+              <input 
+                type="password" 
+                id="loginPassword" 
+                class="form-input" 
+                placeholder="Enter your password" 
+                autocomplete="current-password"
+                required
+              >
+              <button 
+                type="button" 
+                class="btn-toggle-password" 
+                id="togglePasswordBtn" 
+                aria-label="Toggle password visibility"
+                title="Show/Hide password"
+              >
+                <!-- Eye open icon -->
+                <svg class="eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+                <!-- Eye closed icon -->
+                <svg class="eye-closed hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                  <line x1="1" y1="1" x2="23" y2="23"/>
+                </svg>
+              </button>
+            </div>
+            <span class="inline-feedback" id="loginPassError"></span>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn-primary btn-block" id="btnLoginSubmit">
+            <span class="btn-text">Continue</span>
+            <span class="btn-spinner hidden"></span>
+            <svg class="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </button>
+        </form>
+
+        <!-- Card Footer -->
+        <div class="card-footer">
+          <p class="footer-text">
+            Don't have an account? 
+            <a href="#" class="form-link font-semibold" id="createAccountLink">Create account</a>
+          </p>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           PAGE 2: TWO-FACTOR AUTHENTICATION (2FA)
+      =============================================== -->
+      <section class="auth-card page-view" id="otpPage" aria-labelledby="otpHeading">
+        <div class="card-header">
+          <div class="card-icon-bubble bubble-accent">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <path d="M9 12a3 3 0 1 0 6 0 3 3 0 0 0-6 0z"/>
+            </svg>
+          </div>
+          <h2 class="card-heading" id="otpHeading">Verify your identity</h2>
+          <p class="card-subtext">Enter the 6-digit verification code.</p>
+          <div class="otp-sent-info">
+            <span>Sent to secure channel: </span>
+            <strong class="sent-target" id="otpTargetMask">d***@securegate.io</strong>
+          </div>
+        </div>
+
+        <!-- Demo Helper Banner for OTP -->
+        <div class="demo-helper-banner" id="demoOtpBanner">
+          <div class="demo-banner-content">
+            <span class="demo-pill">DEMO OTP</span>
+            <div class="demo-creds-text">
+              Code: <strong class="code-highlight">123456</strong>
+            </div>
+          </div>
+          <button type="button" class="btn-demo-autofill" id="btnAutoFillOtp" title="Paste demo OTP">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+              <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+            </svg>
+            Auto-fill
+          </button>
+        </div>
+
+        <!-- Lockout Notice (hidden by default) -->
+        <div class="alert-box alert-lockout hidden" id="lockoutAlert" role="alert">
+          <div class="alert-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+          </div>
+          <div class="alert-message">
+            <div class="lockout-title">Account Temporarily Locked</div>
+            <div class="lockout-desc">
+              Maximum demo attempts exceeded. Please wait <span id="lockoutSeconds">30</span>s before trying again.
+            </div>
+          </div>
+        </div>
+
+        <!-- Error Alert Container -->
+        <div class="alert-box alert-error hidden" id="otpAlert" role="alert">
+          <div class="alert-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </div>
+          <div class="alert-content-group">
+            <div class="alert-message" id="otpAlertMsg">
+              Incorrect verification code. Please try again.
+            </div>
+            <span class="attempts-remaining" id="attemptsRemainingText">2 attempts remaining</span>
+          </div>
+        </div>
+
+        <!-- OTP Form -->
+        <form class="auth-form" id="otpForm" novalidate>
+          <div class="otp-inputs-wrapper" id="otpInputsContainer">
+            <input type="text" class="otp-digit" maxlength="1" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" aria-label="Digit 1" autofocus>
+            <input type="text" class="otp-digit" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Digit 2">
+            <input type="text" class="otp-digit" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Digit 3">
+            <input type="text" class="otp-digit" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Digit 4">
+            <input type="text" class="otp-digit" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Digit 5">
+            <input type="text" class="otp-digit" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Digit 6">
+          </div>
+
+          <!-- Resend Code Timer Row -->
+          <div class="otp-resend-row">
+            <span class="resend-countdown" id="resendCountdown">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              Resend code in <strong id="resendTimerVal">00:30</strong>
+            </span>
+            <button type="button" class="btn-resend-link hidden" id="btnResendCode">
+              Resend Code
+            </button>
+          </div>
+
+          <!-- Verify Button -->
+          <button type="submit" class="btn-primary btn-block" id="btnVerifyOtp">
+            <span class="btn-text">Verify Code</span>
+            <span class="btn-spinner hidden"></span>
+            <svg class="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </button>
+        </form>
+
+        <!-- Alternate Methods & Back to Login -->
+        <div class="card-footer">
+          <div class="footer-links-stack">
+            <button type="button" class="form-link-btn" id="altMethodsBtn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                <line x1="8" y1="21" x2="16" y2="21"/>
+                <line x1="12" y1="17" x2="12" y2="21"/>
+              </svg>
+              Use another verification method
+            </button>
+            <button type="button" class="btn-back-link" id="backToLoginBtn">
+              &larr; Back to login
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           PAGE 3: PERSONAL DETAILS
+      =============================================== -->
+      <section class="auth-card profile-card page-view" id="profilePage" aria-labelledby="profileHeading">
+        <div class="card-header profile-header">
+          <div class="profile-header-lead">
+            <div class="card-icon-bubble bubble-violet">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="8.5" cy="7" r="4"/>
+                <line x1="20" y1="8" x2="20" y2="14"/>
+                <line x1="23" y1="11" x2="17" y2="11"/>
+              </svg>
+            </div>
+            <div>
+              <h2 class="card-heading text-left" id="profileHeading">Complete your profile</h2>
+              <p class="card-subtext text-left">Add your personal details to continue.</p>
+            </div>
+          </div>
+          <button type="button" class="btn-sample-fill" id="btnFillSampleProfile" title="Auto-fill with sample student/engineer profile">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
+            Fill Sample Data
+          </button>
+        </div>
+
+        <!-- Validation Summary Alert (Appears on submit error) -->
+        <div class="alert-box alert-error hidden" id="profileAlert" role="alert">
+          <div class="alert-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </div>
+          <div class="alert-message" id="profileAlertMsg">
+            Please resolve the highlighted validation errors below.
+          </div>
+        </div>
+
+        <!-- Personal Details Form -->
+        <form class="profile-form" id="profileDetailsForm" novalidate>
+          
+          <!-- SECTION 1: Personal Information -->
+          <div class="form-section-block">
+            <div class="section-title-row">
+              <div class="section-number">1</div>
+              <div>
+                <h3 class="section-title">Personal Information</h3>
+                <p class="section-desc">Primary identity and communication details</p>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <!-- Full Name -->
+              <div class="form-group grid-col-2" id="groupFullName">
+                <label class="form-label" for="fullName">
+                  Full Name <span class="required-star">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <span class="input-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                      <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                  </span>
+                  <input type="text" id="fullName" class="form-input" placeholder="e.g. Alex Morgan" required>
+                </div>
+                <span class="inline-feedback" id="errFullName"></span>
+              </div>
+
+              <!-- Date of Birth -->
+              <div class="form-group" id="groupDob">
+                <label class="form-label" for="dob">
+                  Date of Birth <span class="required-star">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <span class="input-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                      <line x1="16" y1="2" x2="16" y2="6"/>
+                      <line x1="8" y1="2" x2="8" y2="6"/>
+                      <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                  </span>
+                  <input type="date" id="dob" class="form-input" required>
+                </div>
+                <span class="inline-feedback" id="errDob"></span>
+              </div>
+
+              <!-- Gender -->
+              <div class="form-group" id="groupGender">
+                <label class="form-label" for="gender">
+                  Gender <span class="required-star">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <span class="input-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="9"/>
+                      <path d="M12 7v10"/>
+                      <path d="M8 12h8"/>
+                    </svg>
+                  </span>
+                  <select id="gender" class="form-input form-select" required>
+                    <option value="" disabled selected>Select Gender</option>
+                    <option value="Female">Female</option>
+                    <option value="Male">Male</option>
+                    <option value="Non-Binary">Non-Binary</option>
+                    <option value="Prefer not to say">Prefer not to say</option>
+                  </select>
+                </div>
+                <span class="inline-feedback" id="errGender"></span>
+              </div>
+
+              <!-- Phone Number -->
+              <div class="form-group" id="groupPhone">
+                <label class="form-label" for="phone">
+                  Phone Number <span class="required-star">*</span>
+                  <span class="field-hint">(digits only)</span>
+                </label>
+                <div class="input-wrapper">
+                  <span class="input-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                    </svg>
+                  </span>
+                  <input 
+                    type="tel" 
+                    id="phone" 
+                    class="form-input" 
+                    placeholder="e.g. 9876543210" 
+                    inputmode="numeric"
+                    maxlength="15"
+                    required
+                  >
+                </div>
+                <span class="inline-feedback" id="errPhone"></span>
+              </div>
+
+              <!-- Email Address -->
+              <div class="form-group" id="groupEmail">
+                <label class="form-label" for="email">
+                  Email Address <span class="required-star">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <span class="input-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                      <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                  </span>
+                  <input 
+                    type="email" 
+                    id="email" 
+                    class="form-input" 
+                    placeholder="e.g. alex.morgan@domain.com" 
+                    required
+                  >
+                </div>
+                <span class="inline-feedback" id="errEmail"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 2: College / Academic Information -->
+          <div class="form-section-block">
+            <div class="section-title-row">
+              <div class="section-number">2</div>
+              <div>
+                <h3 class="section-title">College / Academic Information</h3>
+                <p class="section-desc">Institutional credentials and affiliation</p>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <!-- Occupation -->
+              <div class="form-group" id="groupOccupation">
+                <label class="form-label" for="occupation">
+                  Occupation <span class="required-star">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <span class="input-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                      <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                    </svg>
+                  </span>
+                  <select id="occupation" class="form-input form-select" required>
+                    <option value="" disabled selected>Select Occupation</option>
+                    <option value="Student">Student</option>
+                    <option value="Researcher">Researcher</option>
+                    <option value="Faculty / Professor">Faculty / Professor</option>
+                    <option value="Security Engineer">Security Engineer</option>
+                    <option value="Software Developer">Software Developer</option>
+                    <option value="IT Administrator">IT Administrator</option>
+                  </select>
+                </div>
+                <span class="inline-feedback" id="errOccupation"></span>
+              </div>
+
+              <!-- Roll Number -->
+              <div class="form-group" id="groupRollNumber">
+                <label class="form-label" for="rollNumber">
+                  Roll Number <span class="required-star">*</span>
+                  <span class="field-hint">(alphanumeric)</span>
+                </label>
+                <div class="input-wrapper">
+                  <span class="input-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                      <polyline points="14 2 14 8 20 8"/>
+                    </svg>
+                  </span>
+                  <input 
+                    type="text" 
+                    id="rollNumber" 
+                    class="form-input" 
+                    placeholder="e.g. CS2026-4890" 
+                    required
+                  >
+                </div>
+                <span class="inline-feedback" id="errRollNumber"></span>
+              </div>
+
+              <!-- College / Organization -->
+              <div class="form-group grid-col-2" id="groupCollege">
+                <label class="form-label" for="college">
+                  College / Organization <span class="required-star">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <span class="input-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                      <polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                  </span>
+                  <input 
+                    type="text" 
+                    id="college" 
+                    class="form-input" 
+                    placeholder="e.g. Stanford University / MIT / Cyber Institute" 
+                    required
+                  >
+                </div>
+                <span class="inline-feedback" id="errCollege"></span>
+              </div>
+
+              <!-- Course / Department -->
+              <div class="form-group" id="groupCourse">
+                <label class="form-label" for="course">
+                  Course / Department <span class="required-star">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <span class="input-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                    </svg>
+                  </span>
+                  <input 
+                    type="text" 
+                    id="course" 
+                    class="form-input" 
+                    placeholder="e.g. Computer Science & AI" 
+                    required
+                  >
+                </div>
+                <span class="inline-feedback" id="errCourse"></span>
+              </div>
+
+              <!-- Semester / Year -->
+              <div class="form-group" id="groupSemester">
+                <label class="form-label" for="semester">
+                  Semester / Year <span class="required-star">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <span class="input-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"/>
+                      <polyline points="12 6 12 12 14 14"/>
+                    </svg>
+                  </span>
+                  <select id="semester" class="form-input form-select" required>
+                    <option value="" disabled selected>Select Semester / Year</option>
+                    <option value="1st Year / Semester 1">1st Year / Semester 1</option>
+                    <option value="1st Year / Semester 2">1st Year / Semester 2</option>
+                    <option value="2nd Year / Semester 3">2nd Year / Semester 3</option>
+                    <option value="2nd Year / Semester 4">2nd Year / Semester 4</option>
+                    <option value="3rd Year / Semester 5">3rd Year / Semester 5</option>
+                    <option value="3rd Year / Semester 6">3rd Year / Semester 6</option>
+                    <option value="4th Year / Semester 7">4th Year / Semester 7</option>
+                    <option value="4th Year / Semester 8">4th Year / Semester 8</option>
+                    <option value="Graduate / Post-Grad">Graduate / Post-Grad</option>
+                  </select>
+                </div>
+                <span class="inline-feedback" id="errSemester"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 3: Address -->
+          <div class="form-section-block">
+            <div class="section-title-row">
+              <div class="section-number">3</div>
+              <div>
+                <h3 class="section-title">Address</h3>
+                <p class="section-desc">Residential and regional verification coordinates</p>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <!-- Street Address -->
+              <div class="form-group grid-col-2" id="groupAddress">
+                <label class="form-label" for="address">
+                  Street Address <span class="required-star">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <span class="input-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                      <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                  </span>
+                  <input 
+                    type="text" 
+                    id="address" 
+                    class="form-input" 
+                    placeholder="e.g. 742 Evergreen Terrace, Suite 400" 
+                    required
+                  >
+                </div>
+                <span class="inline-feedback" id="errAddress"></span>
+              </div>
+
+              <!-- City -->
+              <div class="form-group" id="groupCity">
+                <label class="form-label" for="city">
+                  City <span class="required-star">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <span class="input-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                      <polyline points="2 17 12 22 22 17"/>
+                      <polyline points="2 12 12 17 22 12"/>
+                    </svg>
+                  </span>
+                  <input type="text" id="city" class="form-input" placeholder="e.g. San Francisco" required>
+                </div>
+                <span class="inline-feedback" id="errCity"></span>
+              </div>
+
+              <!-- State -->
+              <div class="form-group" id="groupState">
+                <label class="form-label" for="state">
+                  State / Province <span class="required-star">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <span class="input-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"/>
+                      <line x1="2" y1="12" x2="22" y2="12"/>
+                    </svg>
+                  </span>
+                  <input type="text" id="state" class="form-input" placeholder="e.g. California" required>
+                </div>
+                <span class="inline-feedback" id="errState"></span>
+              </div>
+
+              <!-- Country -->
+              <div class="form-group" id="groupCountry">
+                <label class="form-label" for="country">
+                  Country <span class="required-star">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <span class="input-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"/>
+                      <line x1="2" y1="12" x2="22" y2="12"/>
+                      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
+                  </span>
+                  <input type="text" id="country" class="form-input" placeholder="e.g. United States" required>
+                </div>
+                <span class="inline-feedback" id="errCountry"></span>
+              </div>
+
+              <!-- PIN / ZIP Code -->
+              <div class="form-group" id="groupZip">
+                <label class="form-label" for="zip">
+                  PIN / ZIP Code <span class="required-star">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <span class="input-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="2" y="4" width="20" height="16" rx="2"/>
+                      <path d="M7 15h0"/>
+                      <path d="M2 9.5h20"/>
+                    </svg>
+                  </span>
+                  <input type="text" id="zip" class="form-input" placeholder="e.g. 94105" required>
+                </div>
+                <span class="inline-feedback" id="errZip"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Actions: Back & Save & Continue -->
+          <div class="form-actions-row">
+            <button type="button" class="btn-secondary" id="btnBackToOtp">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="19" y1="12" x2="5" y2="12"/>
+                <polyline points="12 19 5 12 12 5"/>
+              </svg>
+              <span>Back</span>
+            </button>
+            <button type="submit" class="btn-primary" id="btnSaveProfile">
+              <span class="btn-text">Save & Continue</span>
+              <span class="btn-spinner hidden"></span>
+              <svg class="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- ==============================================
+           PAGE 3B: SUCCESS INTERSTITIAL
+      =============================================== -->
+      <section class="auth-card page-view success-card" id="successPage" aria-labelledby="successHeading">
+        <div class="success-animation-wrapper">
+          <div class="success-icon-pulse">
+            <svg class="success-check-svg" viewBox="0 0 52 52">
+              <circle class="success-circle" cx="26" cy="26" r="25" fill="none"/>
+              <path class="success-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="card-header text-center">
+          <span class="badge-success-chip">VERIFIED & SAVED</span>
+          <h2 class="card-heading" id="successHeading">Profile completed successfully</h2>
+          <p class="card-subtext">Your account setup is complete.</p>
+        </div>
+
+        <div class="success-summary-box">
+          <div class="summary-item">
+            <span class="summary-key">Account Holder</span>
+            <span class="summary-val" id="successSummaryName">—</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-key">Affiliation</span>
+            <span class="summary-val" id="successSummaryOrg">—</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-key">Security Clearance</span>
+            <span class="summary-val text-emerald">Level 3 (2FA Enabled)</span>
+          </div>
+        </div>
+
+        <button type="button" class="btn-primary btn-block btn-lg" id="btnGoToDashboard">
+          <span>Go to Dashboard</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
+      </section>
+
+      <!-- ==============================================
+           PAGE 4: DASHBOARD
+      =============================================== -->
+      <section class="dashboard-view page-view" id="dashboardPage" aria-labelledby="dashHeading">
+        <!-- Dashboard Top Banner -->
+        <div class="dash-hero-card">
+          <div class="dash-hero-content">
+            <div class="dash-user-avatar" id="dashAvatar">
+              <span id="dashAvatarInitials">AM</span>
+            </div>
+            <div class="dash-user-meta">
+              <div class="dash-status-row">
+                <span class="security-status-badge">
+                  <span class="pulse-dot"></span>
+                  2FA Active &bull; Protected Session
+                </span>
+                <span class="badge-role" id="dashRoleBadge">Student</span>
+              </div>
+              <h1 class="dash-user-title" id="dashHeading">
+                Welcome back, <span id="dashUserName">Alex Morgan</span>
+              </h1>
+              <p class="dash-user-subtitle">
+                Identity verified with SecureGate Zero-Trust Auth on 
+                <span id="dashTimestamp">Today</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="dash-hero-action">
+            <button type="button" class="btn-logout" id="btnLogoutBtn" title="Sign out of SecureGate">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                <polyline points="16 17 21 12 16 7"/>
+                <line x1="21" y1="12" x2="9" y2="12"/>
+              </svg>
+              <span>Logout</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Metric Grid -->
+        <div class="dash-metric-grid">
+          <!-- Card 1: Profile Completion -->
+          <div class="metric-card progress-card">
+            <div class="metric-header">
+              <span class="metric-label">Profile Completion Status</span>
+              <span class="metric-badge-complete">Complete</span>
+            </div>
+            <div class="progress-metric-body">
+              <div class="progress-ring-box">
+                <svg class="progress-ring" width="80" height="80">
+                  <circle class="progress-ring-bg" stroke="#e2e8f0" stroke-width="7" fill="transparent" r="32" cx="40" cy="40"/>
+                  <circle class="progress-ring-circle" stroke="#10b981" stroke-width="7" stroke-dasharray="201.06" stroke-dashoffset="0" stroke-linecap="round" fill="transparent" r="32" cx="40" cy="40"/>
+                </svg>
+                <div class="progress-ring-text">100%</div>
+              </div>
+              <div class="progress-text-block">
+                <div class="metric-big-val">100%</div>
+                <p class="metric-desc">All required personal, academic, and address records verified.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Security Gate Status -->
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">Authentication Layer</span>
+              <span class="metric-badge-live">Enforced</span>
+            </div>
+            <div class="security-card-body">
+              <div class="sec-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span>Password + 6-Digit OTP</span>
+              </div>
+              <div class="sec-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span>Brute-force Lockout Guard</span>
+              </div>
+              <div class="sec-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span>Local Session Isolation</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Session Details -->
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">Session Diagnostics</span>
+              <span class="session-id-pill" id="dashSessionId">SG-8942-01</span>
+            </div>
+            <div class="session-details-list">
+              <div class="dash-row">
+                <span class="dash-k">Auth Protocol:</span>
+                <span class="dash-v">MFA / TOTP Demo</span>
+              </div>
+              <div class="dash-row">
+                <span class="dash-k">State:</span>
+                <span class="dash-v text-emerald">Authenticated</span>
+              </div>
+              <div class="dash-row">
+                <span class="dash-k">Environment:</span>
+                <span class="dash-v">Browser Sandbox</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Verified Profile Records -->
+        <div class="dash-details-section">
+          <div class="details-section-header">
+            <div class="header-left">
+              <div class="section-icon-pill">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="16" y1="13" x2="8" y2="13"/>
+                  <line x1="16" y1="17" x2="8" y2="17"/>
+                </svg>
+              </div>
+              <div>
+                <h2 class="details-title">Verified Profile Profile Dossier</h2>
+                <p class="details-subtitle">Data synchronized from your registration submission</p>
+              </div>
+            </div>
+            <span class="verified-tag">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              Synchronized & Active
+            </span>
+          </div>
+
+          <div class="profile-cards-grid">
+            <!-- Academic Dossier Card -->
+            <div class="dossier-card">
+              <div class="dossier-card-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                  <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                </svg>
+                Academic / Institutional Credentials
+              </div>
+              <div class="dossier-items">
+                <div class="dossier-row">
+                  <span class="dossier-label">Occupation</span>
+                  <span class="dossier-val font-semibold" id="dashOccupation">—</span>
+                </div>
+                <div class="dossier-row">
+                  <span class="dossier-label">Roll Number</span>
+                  <span class="dossier-val mono-badge" id="dashRollNumber">—</span>
+                </div>
+                <div class="dossier-row">
+                  <span class="dossier-label">Course / Department</span>
+                  <span class="dossier-val" id="dashCourse">—</span>
+                </div>
+                <div class="dossier-row">
+                  <span class="dossier-label">College / Organization</span>
+                  <span class="dossier-val" id="dashCollege">—</span>
+                </div>
+                <div class="dossier-row">
+                  <span class="dossier-label">Semester / Year</span>
+                  <span class="dossier-val" id="dashSemester">—</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Personal & Contact Dossier Card -->
+            <div class="dossier-card">
+              <div class="dossier-card-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+                Personal & Contact Information
+              </div>
+              <div class="dossier-items">
+                <div class="dossier-row">
+                  <span class="dossier-label">Full Name</span>
+                  <span class="dossier-val font-semibold" id="dashFullName">—</span>
+                </div>
+                <div class="dossier-row">
+                  <span class="dossier-label">Email Address</span>
+                  <span class="dossier-val" id="dashEmail">—</span>
+                </div>
+                <div class="dossier-row">
+                  <span class="dossier-label">Phone Number</span>
+                  <span class="dossier-val mono-text" id="dashPhone">—</span>
+                </div>
+                <div class="dossier-row">
+                  <span class="dossier-label">Date of Birth</span>
+                  <span class="dossier-val" id="dashDob">—</span>
+                </div>
+                <div class="dossier-row">
+                  <span class="dossier-label">Gender</span>
+                  <span class="dossier-val" id="dashGender">—</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Address Dossier Card -->
+            <div class="dossier-card">
+              <div class="dossier-card-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+                Residential Address Coordinates
+              </div>
+              <div class="dossier-items">
+                <div class="dossier-row">
+                  <span class="dossier-label">Street Address</span>
+                  <span class="dossier-val" id="dashAddress">—</span>
+                </div>
+                <div class="dossier-row">
+                  <span class="dossier-label">City</span>
+                  <span class="dossier-val" id="dashCity">—</span>
+                </div>
+                <div class="dossier-row">
+                  <span class="dossier-label">State / Province</span>
+                  <span class="dossier-val" id="dashState">—</span>
+                </div>
+                <div class="dossier-row">
+                  <span class="dossier-label">Country</span>
+                  <span class="dossier-val" id="dashCountry">—</span>
+                </div>
+                <div class="dossier-row">
+                  <span class="dossier-label">PIN / ZIP Code</span>
+                  <span class="dossier-val mono-badge" id="dashZip">—</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Global Footer -->
+    <footer class="app-footer">
+      <div class="footer-inner">
+        <p>&copy; 2026 SecureGate Zero-Trust Security Prototype. Mock local sandbox environment.</p>
+        <div class="footer-tags">
+          <span>Local Demo</span>
+          <span>&bull;</span>
+          <span>No External Data Transmission</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ==============================================
+       MODALS & OVERLAYS
+  =============================================== -->
+
+  <!-- Modal: Alternate Verification Methods -->
+  <div class="modal-backdrop hidden" id="altMethodsModal" role="dialog" aria-modal="true" aria-labelledby="altModalTitle">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+              <line x1="8" y1="21" x2="16" y2="21"/>
+              <line x1="12" y1="17" x2="12" y2="21"/>
+            </svg>
+          </div>
+          <h3 class="modal-title" id="altModalTitle">Choose Verification Method</h3>
+        </div>
+        <button type="button" class="btn-modal-close" id="closeAltModalBtn" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-intro">Select an alternative authentication factor associated with your demo profile:</p>
+        <div class="method-options-list">
+          <button type="button" class="method-option-card active" data-method="email">
+            <div class="method-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </div>
+            <div class="method-text">
+              <div class="method-name">Primary Email OTP (Active)</div>
+              <div class="method-sub">Sent 6-digit code to d***@securegate.io</div>
+            </div>
+            <span class="method-tag">Default</span>
+          </button>
+
+          <button type="button" class="method-option-card" data-method="totp">
+            <div class="method-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+                <line x1="12" y1="18" x2="12.01" y2="18"/>
+              </svg>
+            </div>
+            <div class="method-text">
+              <div class="method-name">Authenticator App (TOTP)</div>
+              <div class="method-sub">Google Authenticator, Authy, or 1Password</div>
+            </div>
+          </button>
+
+          <button type="button" class="method-option-card" data-method="sms">
+            <div class="method-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+            </div>
+            <div class="method-text">
+              <div class="method-name">SMS Verification Code</div>
+              <div class="method-sub">Send code to registered mobile +1 (•••) •••-4290</div>
+            </div>
+          </button>
+
+          <button type="button" class="method-option-card" data-method="fido">
+            <div class="method-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+                <path d="M2 12h20"/>
+              </svg>
+            </div>
+            <div class="method-text">
+              <div class="method-name">Hardware Security Key / Passkey</div>
+              <div class="method-sub">YubiKey, Touch ID, or Windows Hello</div>
+            </div>
+          </button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" id="cancelAltModalBtn">Cancel</button>
+        <button type="button" class="btn-primary" id="confirmAltModalBtn">Switch Method</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Info / Prototype dialog for Forgot Password & Create Account -->
+  <div class="modal-backdrop hidden" id="infoModal" role="dialog" aria-modal="true" aria-labelledby="infoModalTitle">
+    <div class="modal-card modal-card-sm">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="16" x2="12" y2="12"/>
+              <line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+          </div>
+          <h3 class="modal-title" id="infoModalTitle">Prototype Notice</h3>
+        </div>
+        <button type="button" class="btn-modal-close" id="closeInfoModalBtn" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="infoModalBody" class="info-modal-text">
+          Notice content goes here.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-primary btn-block" id="ackInfoModalBtn">Got it</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="script.js"></script>
+</body>
+</html>
